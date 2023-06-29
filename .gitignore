@@ -1,3 +1,13 @@
+# Exclude video, audio, PremierePro project and articles
+*.txt
+docs/
+images/
+ocof_toolset/
+PremierePro/
+app/video/
+app/logs/
+app/csv/
+
 # Created by .ignore support plugin (hsz.mobi)
 
 
