@@ -1,0 +1,3 @@
+[submodule "SiamMask"]
+	path = app/SiamMask
+	url = git@github.com:BobbyGoop/SiamMask.git

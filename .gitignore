@@ -8,6 +8,7 @@ app/video/
 app/logs/
 app/csv/
 app/tests/
+*.csv
 
 # Created by .ignore support plugin (hsz.mobi)
 
