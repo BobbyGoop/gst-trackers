@@ -1,0 +1,32 @@
+{
+    "video": {
+        "width": 1280,
+        "height": 720,
+        "framerate": 30,
+        "dir_name": "output_single",
+        "noise": 0.5,
+        "grayscale": false,
+        "bg_color": 192,
+        "duration": 60,
+        "border" : 10
+    },
+    "object": {
+        "size": 50,
+        "roi_size": 80,
+        "speed": 20,
+        "pulsation": 0,
+        "number": 1,
+        "center_offset": 0,
+        "contrast_mode":{
+            "enabled": false,
+            "color" : 1
+        }
+    },
+    "obstacle": {
+        "enabled": false,
+        "size": 600,
+        "number": 1,
+        "bg_color": 128,
+        "alpha_enabled" : true
+    }
+}
