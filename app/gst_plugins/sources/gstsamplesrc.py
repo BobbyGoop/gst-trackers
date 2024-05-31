@@ -90,7 +90,7 @@ class GstSampleSrc(GstBase.BaseSrc):
 		self.pts = 0
 		self.stream_duration = DEFAULT_DURATION
 		# print(os.path.abspath("config.json"))
-		cfg = CustomConfig.load_json(os.path.abspath("configs/config.json"))
+		cfg = CustomConfig.load_json(os.path.abspath("./configs/config.json"))
 		self._VID = cfg.video
 		self._OBJ = cfg.object
 		self._BAR = cfg.obstacle
@@ -146,7 +146,7 @@ class GstSampleSrc(GstBase.BaseSrc):
 					)
 				)
 			time.sleep(1)
-		print([i.get_opposite_coords() for i in self.objects])
+		# print([i.get_opposite_coords() for i in self.objects])
 
 		self.FRAMES_NUMBER = DEFAULT_DURATION
 		self.CURRENT_FRAME = 0

@@ -11,9 +11,9 @@ gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
 from gi.repository import Gst, GObject, GstBase
 
-from gst_utils.SelectSquare import SelectSquare
-from gst_utils.gst_hacks import map_gst_buffer, get_buffer_size
-from mosse_filter.mosse_opencv import MOSSE
+from app.gst_utils.SelectSquare import SelectSquare
+from app.gst_utils.gst_hacks import map_gst_buffer, get_buffer_size
+from app.mosse_filter.mosse_opencv import MOSSE
 
 GST_MOSSE_FILTER = 'gstmossefilter'
 
@@ -81,7 +81,7 @@ class GstMosseFilter(GstBase.BaseTransform):
 				cv2.resizeWindow("Range Of Object Interest", 1280, 720)
 				rect_sel = cv2.selectROI("Range Of Object Interest", inp_frame, showCrosshair=True, fromCenter=False)
 			start_time = timeit.default_timer()
-			print(rect_sel[2:])
+			# print(rect_sel[2:])
 			frame_gray = cv2.cvtColor(inp_frame, cv2.COLOR_BGR2GRAY)
 			self.tracker = MOSSE(frame_gray, rect_sel, 8)
 			self.IS_INITIALIZED = True

@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\assets",
+    "\\app\\configs",
+    "\\app\\csv",
+    "\\app\\gst_plugins"
+  ],
+  "SelectedNode": "\\app\\gst_plugins\\filters",
+  "PreviewInSolutionExplorer": false
+}

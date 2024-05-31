@@ -14,7 +14,7 @@
         "size": 80,
         "speed": 10,
         "pulsation": 0,
-        "number": 7,
+        "number": 2,
         "center_offset": 450,
         "contrast_mode":{
             "enabled": true,

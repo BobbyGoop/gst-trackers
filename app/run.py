@@ -43,7 +43,7 @@ def frames_collector_mosse(func):
 def frames_collector_siam(func):
 	def wrapper(*args, **kwargs):
 		ft, fr = func(*args, **kwargs)
-		print(*args)
+		# print(*args)
 		global FRAMES_SIAM
 		FRAMES_SIAM = np.append(FRAMES_SIAM, [[ft, fr]], axis=0)
 
@@ -82,6 +82,7 @@ if __name__ == "__main__":
 	ap.add_argument("-f", "--filter", choices=['mosse', 'siam', 'blur', 'example'], required=False, help="Path to video file")
 	ap.add_argument("-r", "--rate", default=30, required=False, help="Video framerate",type=int)
 	ap.add_argument("-sr", "--size_roi", default=120, required=False, help="Regulates ROI size", type=int)
+	ap.add_argument("-vp", "--video_path", default=None, required=False, help="Video path for testing", type=str)
 	# ap.add_argument("-b", "--blur", action='store_true', help="ON/OFF blur filter")
 	args = vars(ap.parse_args())
 
@@ -99,12 +100,24 @@ if __name__ == "__main__":
 	# gtksink https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-good/html/gst-plugins-good-plugins-gtksink.html
 	# command = 'filesrc location={} ! '.format(file_name)
 	# command = f'multifilesrc location="{folder_name}/%05d.jpg" index=0 caps="image/jpeg,framerate=\(fraction\)60/1" ! '
+
+	width,height = 1280, 720
+	video_path = args['video_path']
 	framerate = args['rate']
-	command = f'gstsamplesrc is-grayscale=false ! video/x-raw,width=1280,height=720,framerate={framerate}/1 ! '
+	if video_path:
+		# command = f'imagesequencesrc location={video_path} start-index=1 stop-index=1800 framerate = {framerate}/1 ! qtdemux ! h264parse ! avdec_h264 ! video/x-raw,format=I420 !'
+		command = f'imagesequencesrc location={video_path} start-index=0 stop-index=1800 framerate={framerate}/1 ! avdec_bmp ! video/x-raw,format=BGR ! '
+		command += 'videoconvert ! video/x-raw,format=RGB ! '
+		# command += f'videoscale ! video/x-raw,width={width},height={height} ! '
+	else:
+		command = f'gstsamplesrc is-grayscale=false ! video/x-raw,width=1280,height=720,framerate={framerate}/1 ! '
 	# command += 'decodebin ! '
 	# command += 'nvjpegdec !'
 	# command += ''
-	# command += ' videoconvert ! '
+	# Scale video
+
+
+	# command += f' ! videoconvert ! video/x-raw,format=RGB ! videoscale ! video/x-raw,width=1280,height=720 ! videoconvert ! '
 	# command += 'gstsiamfilter ! '
 	# command += f'videorate ! video/x-raw,framerate={framerate}/1 ! '
 
@@ -113,13 +126,13 @@ if __name__ == "__main__":
 	# command += 'gstblurfilter ! '
 	# command += 'gstexamplefilter ! '
 	if args['filter'] == 'mosse':
-		command += 'videorate ! gstmossefilter ! '
+		command += f' gstmossefilter ! '
 	elif args['filter'] == 'siam':
-		command += 'videorate ! gstsiamfilter ! '
+		command += 'gstsiamfilter ! '
 	elif args['filter'] == 'blur':
-		command += 'videorate ! gstblurfilter ! '
+		command += 'gstblurfilter ! '
 	elif args['filter'] == 'example':
-		command += 'videorate ! gstexamplefilter ! '
+		command += 'gstexamplefilter ! '
 	else:
 		pass
 	# command += 'nvh264enc ! '
@@ -129,11 +142,11 @@ if __name__ == "__main__":
 	# command += 'gtksink'
 	# command += "glimagesink"
 	# command += 'videorate ! video/x-raw,framerate=30/1 ! '
-	command += 'videoconvert ! video/x-raw,format=RGBA ! '
+	# command += 'videoconvert ! video/x-raw,format=RGBA ! '
 	# command += 'videorate ! video/x-raw,framerate=30/1 ! '
-	# command += 'autovideosink'
+	command += 'videoconvert ! autovideosink'
 	# command += 'fpsdisplaysink video-sink=d3d11videosink text-overlay=true'
-	command += "d3d11videosink sync=true"
+	# command += "d3d11videosink sync=true"
 	# command += "avdec_h264 ! h264parse ! mp4mux ! filesink location=vid2.mp4"
 	GstMosseFilter.save_results = frames_collector_mosse(GstMosseFilter.save_results)
 	GstSiamFilter.save_results = frames_collector_siam(GstSiamFilter.save_results)

@@ -12,12 +12,12 @@ gi.require_version('GstBase', '1.0')
 gi.require_version('GstVideo', '1.0')
 
 from gi.repository import Gst, GObject, GstBase, GstVideo
-from SiamMask.utils.config_helper import proccess_loss, add_default
-from SiamMask.utils.load_helper import load_pretrain
-from SiamMask.experiments.siammask_sharp.custom import Custom
-from SiamMask.tools.test import siamese_init, siamese_track
-from gst_utils.SelectSquare import SelectSquare
-from gst_utils.gst_hacks import map_gst_buffer, get_buffer_size
+from app.SiamMask.utils.config_helper import proccess_loss, add_default
+from app.SiamMask.utils.load_helper import load_pretrain
+# from app.SiamMask.experiments.siammask_sharp.custom import Custom
+from app.SiamMask.tools.test import siamese_init, siamese_track
+from app.gst_utils.SelectSquare import SelectSquare
+from app.gst_utils.gst_hacks import map_gst_buffer, get_buffer_size
 
 import numpy as np
 import torch
@@ -65,13 +65,13 @@ class GstSiamFilter(GstBase.BaseTransform):
 
     def do_transform(self, inbuffer, outbuffer):
         """
-			Implementation of simple filter.
-			Inbuffer, outbuffer are different buffers, so
-			manipulations with inbuffer not affects outbuffer
+            Implementation of simple filter.
+            Inbuffer, outbuffer are different buffers, so
+            manipulations with inbuffer not affects outbuffer
 
-			Read more:
-			https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html
-		"""
+            Read more:
+            https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html
+            """
 
         success, (width, height) = get_buffer_size(self.srcpad.get_current_caps())
         if not success:
@@ -101,7 +101,9 @@ class GstSiamFilter(GstBase.BaseTransform):
             cfg = self.load_config({
                 "config": self.CONFIG_PATH
             })
+
             from experiments.siammask_sharp.custom import Custom
+
             siammask = Custom(anchors=cfg['anchors'])
             if self.MODEL_PATH:
                 assert os.path.isfile(self.MODEL_PATH), 'Please download {} first.'.format(self.MODEL_PATH)
